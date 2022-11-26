@@ -19,16 +19,28 @@ int main()
 	char name[10]; // 검색할 이름
 	char hp[14]; // 검색할 전화번호
 
-	while (cnt<100) {
+	while (1) {
 		print_menu();
 		scanf("%d", &sel);
 		switch (sel)
 		{
-		case 1: // 100개 넘게 입력됨
+		case 1:
 			fp = fopen("phonebook.txt", "a+");
 			if (fp == NULL) {
 				printf("파일 열기 실패");
 				return 1;
+			}
+			cnt = 0;
+			while (!feof(fp)) {
+				fscanf(fp, "%s %s %d", ph[cnt].name, ph[cnt].hp, &ph[cnt].year);
+				if (ph[cnt].year == NULL) {
+					break;
+				}
+				cnt++;
+			}
+			if (cnt > 100) {
+				printf("더이상 입력할 수 없습니다.\n");
+				return -1;
 			}
 			printf("이름: ");
 			scanf("%s", ph[0].name);
@@ -48,10 +60,13 @@ int main()
 				printf("파일 열기 실패");
 				return 1;
 			}
-			while (!feof(fp)) {  // 있는 문자만큼만 읽게 바꿔야함 -> 동적할당
-				for (i = 0; i < 100; i++) {
-					fscanf(fp, "%s %s %d", ph[i].name, ph[i].hp, &ph[i].year);
+			cnt = 0;
+			while (!feof(fp)) {
+				fscanf(fp, "%s %s %d", ph[cnt].name, ph[cnt].hp, &ph[cnt].year);
+				if (ph[cnt].year == NULL) {
+					break;
 				}
+				cnt++;
 			}
 			printf("이름 전화번호 중 검색할 것을 고르세요: ");
 			scanf("%s", choose);
@@ -88,15 +103,18 @@ int main()
 			}
 			fclose(fp);
 			break;
-		case 3: // 동적할당을 이용안하면 100개를 읽음.
+		case 3: 
 			fp = fopen("phonebook.txt", "r");
+			cnt = 0;
 			while (!feof(fp)) {
-				for (i = 0; i < 100; i++) {
-					fscanf(fp, "%s %s %d", ph[i].name, ph[i].hp, &ph[i].year);
+				fscanf(fp, "%s %s %d", ph[cnt].name, ph[cnt].hp, &ph[cnt].year);
+				if (ph[cnt].year == NULL) {
+					break;
 				}
+				cnt++;
 			}
 			printf("\n--------전화번호부-------\n\n");
-			for (i = 0; i < 100; i++) {
+			for (i = 0; i < cnt; i++) {
 				printf("-------------------------\n");
 				printf("이름: %s\n전화번호: %s\n생년월일: %d\n", ph[i].name, ph[i].hp, ph[i].year);
 				printf("-------------------------\n");
