@@ -48,8 +48,16 @@ int main()
 			printf("전화번호: ");
 			scanf("%s", ph[0].hp);
 			fprintf(fp, " %s", ph[0].hp);
-			printf("생년월일: ");
-			scanf("%d", &ph[0].year);
+			while (1) {
+				printf("생년월일: ");
+				scanf("%d", &ph[0].year);
+				if (ph[0].year == NULL) {
+					printf("잘못 입력했습니다. 다시 입력하세요.\n");
+				}
+				else {
+					break;
+				}
+			}
 			fprintf(fp, " %d\n", ph[0].year);
 			printf("추가되었습니다.\n");
 			fclose(fp);
